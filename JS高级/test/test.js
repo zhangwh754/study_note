@@ -1,15 +1,19 @@
-function Person(name) {
-  this.name = name
-}
-
-Person.prototype.getName = function () {
-  console.log(this.name)
+class Person {
+  constructor(name) {
+    this.name = name
+    this._address = '上海'
+  }
+  // 访问器方法
+  get address() {
+    return this._address + '市'
+  }
+  set address(value) {
+    this._address = value
+  }
+  //静态方法
+  static getRandom() {
+    return Math.floor(Math.random() * 10)
+  }
 }
 
 const p1 = new Person('zwh')
-const p2 = new Person('li')
-
-p1.getName()
-p2.getName()
-
-console.log(p1.getName === p2.getName)
