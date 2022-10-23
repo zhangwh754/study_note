@@ -1,0 +1,4 @@
+
+npm config set prefix "D:\node\node_global"
+
+npm config set cache "D:\node\node_cache"
