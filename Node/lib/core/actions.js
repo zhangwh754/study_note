@@ -10,10 +10,11 @@ const createProjectAction = async (project, args) => {
       clone: true
     })
     // 2、npm install
-    await commandSpawn('npm.cmd', ['install'], { cwd: `./${project}` })
+    const command = process.platform === 'win32' ? 'npm.cmd' : 'npm'
+    await commandSpawn(command, ['install'], { cwd: `./${project}` })
     console.log('\x1B[36m%s\x1B[0m', 'Create End')
     // 3、npm run serve
-    // 4、
+    await commandSpawn(command, ['run', 'serve'], { cwd: `./${project}` })
   } catch (error) {
     console.log(error)
   }
