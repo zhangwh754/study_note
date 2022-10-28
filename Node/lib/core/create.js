@@ -1,12 +1,12 @@
 const program = require('commander')
 
-const { createProjectAction } = require('./actions')
+const { addComponent } = require('./actions.js')
 
 const handleCreate = () => {
   program
-    .command('create <project> [args...]')
-    .description('create test')
-    .action(createProjectAction)
+    .command('config <type>')
+    .description('add vue component, 例如: demo addcpn NavBar [-d src/components]')
+    .action(type => addComponent(type))
 }
 
 module.exports = {
