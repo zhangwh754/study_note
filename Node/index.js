@@ -1,7 +1,8 @@
-setTimeout(() => {
-  console.log(1)
-}, 0)
+const fs = require('fs')
 
-queueMicrotask(() => {
-  console.log(2)
+const reader = fs.createReadStream('./1.txt')
+const writer = fs.createWriteStream('./2.txt', {
+  flags: 'a+'
 })
+
+reader.pipe(writer)
