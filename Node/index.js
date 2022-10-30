@@ -1,13 +1,7 @@
-#!/usr/bin/env node
+setTimeout(() => {
+  console.log(1)
+}, 0)
 
-const program = require('commander')
-
-const { handleCreate } = require('./lib/core/create')
-
-const { addOptions } = require('./lib/core/options')
-
-handleCreate()
-
-addOptions()
-
-program.parse()
+queueMicrotask(() => {
+  console.log(2)
+})
