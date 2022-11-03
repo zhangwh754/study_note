@@ -1,24 +1,26 @@
+const fs = require('fs')
+
 const express = require('express')
+const morgan = require('morgan')
 
 const app = express()
 
+app.use(express.json())
+
 const port = 8000
 
-app.use((req, res, next) => {
-  if (req.headers['content-type'] === 'application/json') {
-    req.on('data', data => {
-      req.body = JSON.parse(data.toString())
-    })
-    req.on('end', () => {
-      next()
-    })
-  } else {
-    next()
-  }
+const writableStream = fs.createWriteStream('./logs/access.log', {
+  flags: 'a+'
 })
 
-// 监听POST请求
+app.use(morgan('combined', { stream: writableStream }))
+
 app.post('/user', (req, res, next) => {
+  console.log(req.body)
+  res.end('end')
+})
+
+app.post('/login', (req, res, next) => {
   console.log(req.body)
   res.end('end')
 })
