@@ -1,30 +1,17 @@
-const fs = require('fs')
+const obj = { x: 100 }
+const obj2 = { y: 200 }
 
-const express = require('express')
-const morgan = require('morgan')
-
-const app = express()
-
-app.use(express.json())
-
-const port = 8000
-
-const writableStream = fs.createWriteStream('./logs/access.log', {
-  flags: 'a+'
+Object.defineProperty(obj2, 'x', {
+  set(value) {
+    obj.x = value
+    // this.value = value
+  }
 })
 
-app.use(morgan('combined', { stream: writableStream }))
+console.log('obj:', obj)
+console.log('obj2:', obj2)
 
-app.post('/user', (req, res, next) => {
-  console.log(req.body)
-  res.end('end')
-})
+obj2.x = 300
 
-app.post('/login', (req, res, next) => {
-  console.log(req.body)
-  res.end('end')
-})
-
-app.listen(port, () => {
-  console.log('启动成功')
-})
+console.log('obj:', obj)
+console.log('obj2:', obj2)
