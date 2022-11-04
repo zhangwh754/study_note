@@ -1,4 +1,0 @@
-::1 - - [03/Nov/2022:07:11:56 +0000] "POST /user HTTP/1.1" 200 - "-" "PostmanRuntime/7.26.10"
-::1 - - [03/Nov/2022:07:12:02 +0000] "POST /user HTTP/1.1" 200 - "-" "PostmanRuntime/7.26.10"
-::1 - - [03/Nov/2022:07:12:02 +0000] "POST /user HTTP/1.1" 200 - "-" "PostmanRuntime/7.26.10"
-::1 - - [03/Nov/2022:07:12:23 +0000] "POST /login HTTP/1.1" 200 - "-" "PostmanRuntime/7.26.10"

@@ -1,30 +1,31 @@
-const fs = require('fs')
+const koa = require('koa')
 
-const express = require('express')
-const morgan = require('morgan')
+const app = new koa()
 
-const app = express()
+const m1 = async (ctx, next) => {
+  ctx.request.msg = 'aaa'
+  await next()
+  ctx.body = {
+    status: 200,
+    msg: ctx.request.msg
+  }
+}
+const m2 = async (ctx, next) => {
+  ctx.request.msg += 'bbb'
+  await next()
+}
+const m3 = async (ctx, next) => {
+  const p1 = new Promise(resolve => {
+    setTimeout(() => {
+      ctx.request.msg += 'ccc'
+      resolve()
+    }, 3000)
+  })
+  await p1
+}
 
-app.use(express.json())
+app.use(m1)
+app.use(m2)
+app.use(m3)
 
-const port = 8000
-
-const writableStream = fs.createWriteStream('./logs/access.log', {
-  flags: 'a+'
-})
-
-app.use(morgan('combined', { stream: writableStream }))
-
-app.post('/user', (req, res, next) => {
-  console.log(req.body)
-  res.end('end')
-})
-
-app.post('/login', (req, res, next) => {
-  console.log(req.body)
-  res.end('end')
-})
-
-app.listen(port, () => {
-  console.log('启动成功')
-})
+app.listen(8000)
