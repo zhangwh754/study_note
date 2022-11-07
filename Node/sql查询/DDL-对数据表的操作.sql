@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `students` (
 );
 
 # 删除表
-DROP TABLE IF EXISTS `students`;
+DROP TABLE IF EXISTS `users`;
 
 # 查看表的结构
 DESC students;
