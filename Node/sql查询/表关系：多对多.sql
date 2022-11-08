@@ -92,3 +92,4 @@ ON stu.id = ssc.student_id
 LEFT JOIN `courses` as cs
 ON ssc.courses_id = cs.id
 WHERE stu.id = 1;
+
