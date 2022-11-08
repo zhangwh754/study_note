@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : zwh
  Source Server Type    : MySQL
- Source Server Version : 80031 (8.0.31)
+ Source Server Version : 80031
  Source Host           : localhost:3306
  Source Schema         : study_db
 
  Target Server Type    : MySQL
- Target Server Version : 80031 (8.0.31)
+ Target Server Version : 80031
  File Encoding         : 65001
 
- Date: 07/11/2022 23:20:04
+ Date: 08/11/2022 15:35:18
 */
 
 SET NAMES utf8mb4;
@@ -22,10 +22,10 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `brand`;
 CREATE TABLE `brand`  (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `website` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `phoneRank` int NULL DEFAULT NULL,
+  `phoneRank` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 201 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
@@ -40,21 +40,42 @@ INSERT INTO `brand` VALUES (6, 'Google', 'www.Google.com', 9);
 INSERT INTO `brand` VALUES (200, '华为', 'www.huawei.com', 2);
 
 -- ----------------------------
+-- Table structure for courses
+-- ----------------------------
+DROP TABLE IF EXISTS `courses`;
+CREATE TABLE `courses`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `price` double NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of courses
+-- ----------------------------
+INSERT INTO `courses` VALUES (1, '英语', 100);
+INSERT INTO `courses` VALUES (2, '语文', 666);
+INSERT INTO `courses` VALUES (3, '数学', 888);
+INSERT INTO `courses` VALUES (4, '历史', 80);
+INSERT INTO `courses` VALUES (5, '物理', 888);
+INSERT INTO `courses` VALUES (6, '化学', 888);
+
+-- ----------------------------
 -- Table structure for products
 -- ----------------------------
 DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products`  (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
   `brand` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `price` double NOT NULL,
   `score` decimal(2, 1) NULL DEFAULT NULL,
-  `voteCnt` int NULL DEFAULT NULL,
+  `voteCnt` int(0) NULL DEFAULT NULL,
   `url` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `pid` int NULL DEFAULT NULL,
-  `brand_id` int NULL DEFAULT NULL,
+  `pid` int(0) NULL DEFAULT NULL,
+  `brand_id` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `brand_id`(`brand_id` ASC) USING BTREE,
+  INDEX `brand_id`(`brand_id`) USING BTREE,
   CONSTRAINT `products_ibfk_1` FOREIGN KEY (`brand_id`) REFERENCES `brand` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 109 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
@@ -169,5 +190,52 @@ INSERT INTO `products` VALUES (105, '锤子科技', '锤子科技坚果Pro 2（6
 INSERT INTO `products` VALUES (106, '锤子科技', '锤子科技M1（全网通） ', 1800, 8.0, 148, 'http://detail.zol.com.cn/cell_phone/index1138532.shtml', 1138532, NULL);
 INSERT INTO `products` VALUES (107, '锤子科技', '锤子科技M1L（高配版/全网通） ', 2399, 8.0, 148, 'http://detail.zol.com.cn/cell_phone/index1157726.shtml', 1157726, NULL);
 INSERT INTO `products` VALUES (108, '锤子科技', '锤子科技坚果Pro（32GB ROM/全网通） ', 1099, 7.3, 188, 'http://detail.zol.com.cn/cell_phone/index1170718.shtml', 1170718, NULL);
+
+-- ----------------------------
+-- Table structure for students
+-- ----------------------------
+DROP TABLE IF EXISTS `students`;
+CREATE TABLE `students`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `age` int(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of students
+-- ----------------------------
+INSERT INTO `students` VALUES (1, 'why', 18);
+INSERT INTO `students` VALUES (2, 'tom', 22);
+INSERT INTO `students` VALUES (3, 'lilei', 25);
+INSERT INTO `students` VALUES (4, 'lucy', 16);
+INSERT INTO `students` VALUES (5, 'lily', 20);
+
+-- ----------------------------
+-- Table structure for students_select_courses
+-- ----------------------------
+DROP TABLE IF EXISTS `students_select_courses`;
+CREATE TABLE `students_select_courses`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `student_id` int(0) NOT NULL,
+  `courses_id` int(0) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `student_id`(`student_id`) USING BTREE,
+  INDEX `courses_id`(`courses_id`) USING BTREE,
+  CONSTRAINT `students_select_courses_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `students_select_courses_ibfk_2` FOREIGN KEY (`courses_id`) REFERENCES `courses` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of students_select_courses
+-- ----------------------------
+INSERT INTO `students_select_courses` VALUES (1, 1, 1);
+INSERT INTO `students_select_courses` VALUES (2, 1, 3);
+INSERT INTO `students_select_courses` VALUES (3, 1, 4);
+INSERT INTO `students_select_courses` VALUES (4, 3, 2);
+INSERT INTO `students_select_courses` VALUES (5, 3, 4);
+INSERT INTO `students_select_courses` VALUES (6, 5, 2);
+INSERT INTO `students_select_courses` VALUES (7, 5, 3);
+INSERT INTO `students_select_courses` VALUES (8, 5, 4);
 
 SET FOREIGN_KEY_CHECKS = 1;

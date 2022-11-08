@@ -27,16 +27,21 @@ UPDATE `products` SET `brand_id` = 3 WHERE brand = '小米';
 UPDATE `products` SET `brand_id` = 4 WHERE brand = 'oppo';
  
 # 需要修改brand_id关联的外键
+# 不能直接修改brand_id关联的外键
+UPDATE `brand` SET `id` = 200 WHERE name = '华为';
+
 # 1：获取到当前外键的名称
 SHOW CREATE TABLE `products`;
 
 # 2：根据名称删除外键
 ALTER TABLE `products` DROP FOREIGN KEY `products_ibfk_1`;
 
-# 重新添加外键限制
+# 3：重新添加外键限制
 ALTER TABLE `products` ADD FOREIGN KEY(brand_id) REFERENCES brand(id)
 																								 ON UPDATE CASCADE;
 -- 																							 ON DELETE RESTRICT; 删除使用了默认值
 
 # 现在可以修改brand表的id，会自动更新products表的brand_id
 UPDATE `brand` SET `id` = 200 WHERE name = '华为';
+
+# 
