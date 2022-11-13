@@ -225,9 +225,11 @@ const arr1: number[] = [1, 2, 3]
 const arr3: number[] = [1, 2, 3]
 // arr3.push('4')  //不能将类型“string”分配给类型“number”。
 
-const arr4: number[] = [1, 2, 3]; //数字类型的数组
-const arr5: string[] = ["1", "2"]; //字符串类型的数组
-const arr6: any[] = [1, "2", true]; //任意类型的数组
+const arr4: number[] = [1, 2, 3] //数字类型的数组
+const arr5: string[] = ['1', '2'] //字符串类型的数组
+const arr6: any[] = [1, '2', true] //任意类型的数组
+
+const arr7: object[] = [{}, {}] // 对象类型的数组
 ```
 
 ### 数组泛型
@@ -343,20 +345,48 @@ fn(a, '4', '5', '6')
 - 参数数量不同，可以将不同的参数设置为可选
 
 ```ts
-function fn(params: number): void //第一个重载函数
+type sexType = 'male' | 'female'
 
-function fn(params: string, params2: number): void ////第二个重载函数
+type People = {
+  id: number
+  name: string
+  sex: string
+}
 
-function fn(params: any, params2?: any): void {
-  if (typeof params2 !== 'undefined') {
-    console.log(params + params2)
+const people: People[] = [
+  {
+    id: 1,
+    name: 'zhang',
+    sex: 'male'
+  },
+  {
+    id: 2,
+    name: 'liu',
+    sex: 'female'
+  },
+  {
+    id: 3,
+    name: 'nie',
+    sex: 'male'
+  }
+]
+
+function find(sex: sexType): People[]
+function find(id: number): People
+function find(param: any): People[] | People | undefined {
+  if (typeof param === 'string') {
+    return people.filter(person => person.sex === param)
   } else {
-    console.log(params)
+    return people.find(person => person.id === param)
   }
 }
 
-fn(123)
-fn('123', 456)
+console.log(find(1))  // { id: 1, name: 'zhang', sex: 'male' }
+console.log(find('male'))
+// [
+//   { id: 1, name: 'zhang', sex: 'male' },
+//   { id: 3, name: 'nie', sex: 'male' }
+// ]
 ```
 
 
@@ -492,15 +522,12 @@ console.log(e)
 用<>进行约束
 
 ```ts
-function foo(): Promise<number> {
-  return new Promise<number>((resolve, reject) => {
-    resolve(1)
-  })
-}
+const foo = () => new Promise<number[]>(resolve => resolve([1, 2]))
 
-foo().then(res => {
-  console.log(res)
-})
+;(async () => {
+  const res = await foo()
+  console.log(res.reverse()) // [ 2, 1 ]
+})()
 ```
 
 
@@ -695,7 +722,7 @@ console.log(b.getName()) //li
 
 ## 元祖类型
 
-元组（Tuple）是固定数量的不同类型的元素的组合。
+元组（Tuple）是`固定数量`的`不同类型`的`元素的组合`。
 
 ### 特点
 
@@ -891,16 +918,11 @@ enum Status {
   Off,
   On,
 }
+
 interface Light {
   status: Status
 }
-enum Animal {
-  Dog = 1,
-  Cat = 2,
-}
-// const light1: Light = {
-//   status: Animal.Dog, // error 不能将类型“Animal.Dog”分配给类型“Status”
-// }
+
 const light2: Light = {
   status: Status.Off,
 }
@@ -916,7 +938,7 @@ enum Enum {
   fall,
 }
 let a = Enum.fall
-console.log(a) //0
+console.log(Enum[a]) //fail
 let nameOfA = Enum[Enum.fall]
 console.log(nameOfA) //fall
 ```
