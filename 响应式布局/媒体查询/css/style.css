@@ -1,0 +1,17 @@
+#container {
+  height: 200px;
+}
+#container div {
+  float: left;
+  margin-top: 50px;
+  height: 500px;
+}
+#container div:nth-child(1) {
+  background-color: lightblue;
+}
+#container div:nth-child(2) {
+  background-color: lightcoral;
+}
+#container div:nth-child(3) {
+  background-color: lightgreen;
+}
