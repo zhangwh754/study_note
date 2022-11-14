@@ -1,0 +1,30 @@
+#container {
+  width: 400px;
+  height: 300px;
+  display: flex;
+  background-color: lightblue;
+  row-gap: 10px;
+}
+
+/*
+  两个盒子的宽度和为500px
+  父容器的宽度为400px
+  溢出宽度为100px
+  每一个伸缩项需要的份数 * 当前伸缩项的宽度和为
+  1 * 250 + 3 * 250 = 1000px
+  盒子的宽度 = 溢出的宽度 * 当前伸缩项的宽度 * 当前伸缩项需要的份数 / 总权重值
+  第一个盒子宽度为250 - 100 * 250 * 1 / 1000 = 225px
+  第二个盒子宽度为250 - 100 * 250 * 4 / 1000 = 125px
+*/
+.box:nth-child(1) {
+  height: 200px;
+  background-color: lightcoral;
+  flex-basis: 200px;
+  flex-shrink: 1;
+}
+.box:nth-child(2) {
+  height: 200px;
+  background-color: lightgreen;
+  flex-basis: 200px;
+  flex-shrink: 3;
+}
