@@ -5,10 +5,10 @@ import { RouterView, RouterLink, useRoute } from 'vue-router'
 <template>
   <div>
     <RouterLink to="/" v-if="useRoute().path === '/about'">
-      <button>go home</button>
+      <a-button type="primary">go home</a-button>
     </RouterLink>
     <RouterLink to="/about" v-else>
-      <button>go about</button>
+      <a-button type="primary">go about</a-button>
     </RouterLink>
   </div>
   <RouterView />
