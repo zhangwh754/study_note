@@ -26,5 +26,8 @@
   height: 200px;
   background-color: lightgreen;
   flex-basis: 200px;
-  flex-shrink: 3;
+  flex-grow: 2;
+  flex-shrink: 1;
+  /* 相当于 */
+  flex: 2 1 200px;
 }
