@@ -8,5 +8,3 @@ for (let key in modules) {
     component: modules[key]
   })
 }
-
-console.log(autoRoutes)
