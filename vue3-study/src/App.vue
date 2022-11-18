@@ -11,7 +11,8 @@ const titles = reactive([
   '生命周期',
   '侦听器',
   'ref获取元素',
-  '组件基础'
+  '组件基础',
+  'test'
 ])
 </script>
 
