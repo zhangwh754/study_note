@@ -3,7 +3,16 @@ import { reactive } from 'vue'
 import { RouterView, RouterLink } from 'vue-router'
 import { autoRoutes } from './utils/routes'
 
-const titles = reactive(['响应式基础', '计算属性', '动态class和style', '表单输入绑定', '生命周期'])
+const titles = reactive([
+  '响应式基础',
+  '计算属性',
+  '动态class和style',
+  '表单输入绑定',
+  '生命周期',
+  '侦听器',
+  'ref获取元素',
+  '组件基础'
+])
 </script>
 
 <template>
