@@ -12,7 +12,10 @@ const titles = reactive([
   '侦听器',
   'ref获取元素',
   '组件基础',
-  'test'
+  '组件进阶',
+  '事件进阶',
+  '组件v-model',
+  '有修饰符的组件双向绑定'
 ])
 </script>
 
@@ -20,7 +23,7 @@ const titles = reactive([
   <div id="layout">
     <div id="router">
       <template v-for="(item, index) in autoRoutes" :key="item">
-        <RouterLink :to="item.path">
+        <RouterLink :to="{ name: item.name }">
           <a-button type="primary">{{ titles[index] || '空值' }}</a-button>
         </RouterLink>
       </template>

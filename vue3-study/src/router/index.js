@@ -6,7 +6,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/reactivity'
+      redirect: '/1-Reactivity'
     },
     ...autoRoutes
   ]
