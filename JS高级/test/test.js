@@ -1,47 +1,11 @@
-class EventBus {
-  constructor() {
-    this.eventBus = {}
+new Promise((resolve, reject) => {
+  // resolve或reject之前是pending（待定）状态
+  const num = Math.floor(Math.random() * 10)
+  if (num >= 5) {
+    resolve(num + '成功') // 处于fulfilled状态（已敲定）
+  } else {
+    reject(num + '失败') // 处于rejected状态（已拒绝）
   }
-  on(eventName, eventCallback, thisArg) {
-    let handlers = this.eventBus[eventName]
-    if (!handlers) {
-      handlers = []
-      this.eventBus[eventName] = handlers
-    }
-    handlers.push({
-      eventCallback,
-      thisArg
-    })
-  }
-  emit(eventName, ...payload) {
-    const handlers = this.eventBus[eventName]
-    if (!handlers) return
-    handlers.forEach(handler => {
-      handler.eventCallback.apply(handler.thisArg, payload)
-    })
-  }
-  off(eventName, eventCallback) {
-    const handlers = this.eventBus[eventName]
-    if (!handlers) return
-    const newHandlers = [...handlers]
-    for (let i = 0; i < newHandlers.length; i++) {
-      const handler = newHandlers[i]
-      if (eventCallback === handler.eventCallback) {
-        const index = handlers.indexOf(handler)
-        handlers.splice(index, 1)
-      }
-    }
-  }
-}
-
-const eventBus = new EventBus()
-
-const log = content => console.log(content + '@')
-
-eventBus.on('test', log)
-
-eventBus.emit('test', 'hello world')
-
-eventBus.off('test', log)
-
-eventBus.emit('test', 'hello world')
+})
+  .then(res => console.log(res))
+  .catch(err => console.log(err))
