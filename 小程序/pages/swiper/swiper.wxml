@@ -1,0 +1,12 @@
+<!--view.wxml-->
+<swiper class="container" indicator-dots autoplay circular>
+  <swiper-item>
+    <view class="item">A</view>
+  </swiper-item>
+  <swiper-item>
+    <view class="item">B</view>
+  </swiper-item>
+  <swiper-item>
+    <view class="item">C</view>
+  </swiper-item>
+</swiper>

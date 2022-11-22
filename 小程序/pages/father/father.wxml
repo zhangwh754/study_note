@@ -1,0 +1,11 @@
+<!--father.wxml-->
+<view>father num: {{num}}</view>
+
+<van-divider
+  contentPosition="center"
+  customStyle="color: #1989fa; border-color: #1989fa; font-size: 18px;"
+>
+  父子分割线
+</van-divider>
+
+<child bind:customEvent="customEvent" num="{{num}}"></child>

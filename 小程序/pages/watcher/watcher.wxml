@@ -1,0 +1,5 @@
+<!--watcher.wxml-->
+<watcher>
+  <view></view>
+  <text style="color: red">123</text>
+</watcher>

@@ -1,0 +1,12 @@
+<!--list.wxml-->
+<view class="pagenum">{{pageNum}}</view>
+
+<view class="container">
+  <block wx:for="{{list}}" wx:for-item="pitem" wx:key="pindex">
+    <block wx:for="{{pitem}}" wx:key="id">
+      <view class="item" style="background:rgb({{item.value}})">
+        <text>{{item.value}} </text>
+      </view>
+    </block>
+  </block>
+</view>

@@ -1,0 +1,8 @@
+<!--components/credit_progress/credit_progress.wxml-->
+<view class="progress_container">
+  <van-progress show-pivot="{{false}}" color="#794027" percentage="{{percent}}" />
+  <block wx:for="{{spot}}" wx:key="value">
+    <view class="spot" style="left: {{item.value}}%" />
+    <view class="text" style="left: calc({{item.value}}% - 24rpx)">{{item.label}}</view>
+  </block>
+</view>

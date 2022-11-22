@@ -1,0 +1,33 @@
+/* components/credit_progress/credit_progress.wxss */
+.progress_container {
+  overflow: hidden;
+  height: 48rpx;
+  padding-top: 10rpx;
+  position: relative;
+  margin: 48rpx;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.spot {
+  position: absolute;
+  top: 0;
+  box-sizing: border-box;
+  border: 4rpx solid #794027;
+  border-radius: 50%;
+  background-color: #fff;
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.text {
+  position: absolute;
+  color: #000;
+  top: 24rpx;
+  font-size: 24rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #222222;
+  width: 72rpx;
+  height: 34rpx;
+}

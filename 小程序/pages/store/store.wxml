@@ -1,0 +1,5 @@
+<!--store.wxml-->
+<view>count: {{count}}</view>
+<view>double: {{double}}</view>
+
+<van-button bind:tap="increaseHandle">增加1</van-button>

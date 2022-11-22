@@ -1,0 +1,3 @@
+<view>child num:{{num}}</view>
+
+<van-button bind:tap="btnClick">按钮</van-button>

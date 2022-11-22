@@ -1,0 +1,12 @@
+<!--validate.wxml-->
+<form bindsubmit="submit">
+  <van-field
+    name="informant"
+    model:value="{{ informant }}"
+    label="文本"
+    placeholder="请输入用户名"
+  />
+  <van-button type="default" form-type="submit">默认按钮</van-button>
+</form>
+
+<van-toast id="van-toast" />

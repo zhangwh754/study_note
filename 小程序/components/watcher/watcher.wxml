@@ -1,0 +1,9 @@
+<view class="panel" style="background:rgb({{fullColor}})">{{fullColor}}</view>
+
+<van-button size="mini" type="default" data-type="r" bind:tap="add">R</van-button>
+<van-button size="mini" type="primary" data-type="g" bind:tap="add">G</van-button>
+<van-button size="mini" type="danger" data-type="b" bind:tap="add">B</van-button>
+
+<slot>
+  <!-- <text>{{fullColor}}</text> -->
+</slot>

@@ -1,0 +1,28 @@
+/**list.wxss**/
+.pagenum {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  background-color: lightblue;
+}
+
+.container .item {
+  height: 150px;
+  text-align: center;
+  line-height: 150px;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.container .item text {
+  display: inline-block;
+  background-color: #fff;
+  color: #000;
+  line-height: 40px;
+  border-radius: 10px;
+  width: 40%;
+}

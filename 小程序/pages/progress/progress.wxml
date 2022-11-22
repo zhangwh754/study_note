@@ -1,0 +1,4 @@
+<!--pages/progress/progress.wxml-->
+<credit-progress count="{{91.54}}"></credit-progress>
+
+<credit-progress count="{{91.54}}" spot="{{spot}}"></credit-progress>

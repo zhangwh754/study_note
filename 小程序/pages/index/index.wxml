@@ -1,0 +1,11 @@
+<!--index.wxml-->
+<view>num:{{num}}</view>
+
+<view class="box">
+  <van-button type="primary" bind:tap="btnClick">GET成功</van-button>
+  <van-button type="info" bind:tap="btnClick2">GET失败</van-button>
+  <van-button type="warning" bind:tap="btnClick3">POST成功</van-button>
+  <van-button type="danger" bind:tap="btnClick4">POST失败</van-button>
+</view>
+
+<van-toast id="van-toast" />

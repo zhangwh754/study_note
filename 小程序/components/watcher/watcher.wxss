@@ -1,0 +1,6 @@
+.panel {
+  height: 150px;
+  text-align: center;
+  line-height: 150px;
+  color: #fff;
+}

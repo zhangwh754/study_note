@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.container view {
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  line-height: 100px;
+}
+
+.container view:nth-child(1) {
+  background-color: lightgreen;
+}
+.container view:nth-child(2) {
+  background-color: lightskyblue;
+}
+.container view:nth-child(3) {
+  background-color: lightcoral;
+}

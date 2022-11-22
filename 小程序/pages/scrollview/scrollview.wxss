@@ -1,0 +1,35 @@
+.container {
+  box-sizing: border-box;
+  width: 300px;
+  height: 330px;
+  border: 1px solid red;
+}
+
+.container:nth-child(2) {
+  margin-top: 100px;
+  white-space: nowrap;
+  display: flex;
+  width: 330px;
+  height: 300px;
+}
+
+.container:nth-child(2) view {
+  display: inline-block;
+}
+
+.container view {
+  width: 300px;
+  height: 300px;
+  text-align: center;
+  line-height: 300px;
+}
+
+.container view:nth-child(1) {
+  background-color: lightgreen;
+}
+.container view:nth-child(2) {
+  background-color: lightskyblue;
+}
+.container view:nth-child(3) {
+  background-color: lightcoral;
+}

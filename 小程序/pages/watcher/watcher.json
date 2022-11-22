@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "watcher": "/components/watcher/watcher"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/view/view",
+    "pages/scrollview/scrollview",
+    "pages/swiper/swiper",
+    "pages/validate/validate",
+    "pages/list/list",
+    "pages/intersectionObserver/intersectionObserver",
+    "pages/watcher/watcher",
+    "pages/father/father",
+    "pages/store/store",
+    "pages/progress/progress"
+  ],
+  "tabBar": {
+    "backgroundColor": "#ffffff",
+    "color": "#000000",
+    "selectedColor": "#0A7AFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/list/list",
+        "text": "列表"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#000",
+    "navigationBarTitleText": "hello",
+    "navigationBarTextStyle": "white"
+  },
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-toast": "@vant/weapp/toast/index",
+    "van-divider": "@vant/weapp/divider/index",
+    "van-progress": "@vant/weapp/progress/index"
+  },
+  "lazyCodeLoading": "requiredComponents"
+}

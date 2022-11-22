@@ -1,0 +1,68 @@
+/**intersectionObserver.wxss**/
+.box > view {
+  border-radius: 16rpx;
+  background: linear-gradient(145deg, #f0f0f0, #cacaca);
+  margin-bottom: 30rpx;
+  width: 690rpx;
+}
+
+.p-30 {
+  padding: 30rpx;
+}
+
+.h-300 {
+  height: 300rpx;
+}
+
+.h-160 {
+  height: 160rpx;
+}
+
+.h-30 {
+  height: 30rpx;
+}
+
+.query-selector {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.box-shadow.squ {
+  width: 320rpx;
+  height: 320rpx;
+  border-radius: 50rpx;
+  background: linear-gradient(145deg, #cacaca, #f0f0f0);
+  box-shadow: 20rpx 20rpx 60rpx #bebebe, -20rpx -20rpx 60rpx #ffffff;
+  margin-bottom: 50rpx;
+}
+
+view.fixed-wrap {
+  height: 160rpx;
+  background-color: transparent;
+  margin-bottom: 50rpx;
+}
+
+.fixed-box {
+  width: 690rpx;
+  height: 160rpx;
+  border-radius: 0;
+  background: linear-gradient(145deg, #dba2a2, #ffc1c1);
+  box-shadow: 20rpx 20rpx 60rpx #cf9999, -20rpx -20rpx 60rpx #ffcfcf;
+  left: 30rpx;
+  color: #333333;
+  transition: all 0.1s linear;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fixed-box.stick {
+  /* color: #ffffff; */
+  /* width: 750rpx; */
+  position: fixed;
+  top: 0;
+  /* left: 0; */
+}

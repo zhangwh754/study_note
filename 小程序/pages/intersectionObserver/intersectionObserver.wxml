@@ -1,0 +1,22 @@
+<!--pages/intersectionObserver/intersectionObserver.wxml-->
+<view class="query-selector p-30 box">
+  <view class="h-300">开发者工具存在bug，较慢滑动无法正确判断clientTop，安卓真机上不存在该问题</view>
+  <view class="box-shadow squ" />
+  <view class="h-300" />
+  <view class="fixed-wrap" id="fixed-wrap">
+    <view
+      id="fixed-content"
+      class="fixed-box {{ isFixed ? 'stick' : '' }}"
+      data-text="自定义添加的文字"
+      data-id="{{ identifier }}"
+    >
+      <text>{{ isFixed ? '吸顶啦' : '元素滑动至tab栏时吸顶' }}</text>
+    </view>
+  </view>
+  <block wx:for="{{ 3 }}" wx:key="minibox">
+    <view class="h-30" />
+  </block>
+  <block wx:for="{{ 10 }}" wx:key="placeholder">
+    <view class="h-160" />
+  </block>
+</view>
