@@ -7,7 +7,7 @@
 - typescript
 - 响应式布局
 - 小程序
+- vue3
 
 ### 未完成
-
-- vue3
+- React
