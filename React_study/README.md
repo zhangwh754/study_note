@@ -313,3 +313,67 @@ class Counter extends React.Component {
 }
 ```
 
+### 条件渲染
+
+一般使用如下三种
+
+1. if、else进行判断
+2. 三目运算符
+3. &&
+   - 一般用于请求服务器数据前，值可能为null或undefined的情况
+
+#### 条件判断实例
+
+```jsx
+class Condition extends React.Component {
+  constructor() {
+    super()
+
+    this.state = {
+      isShow: false
+    }
+  }
+
+  toggleShow() {
+    this.setState({
+      isShow: !this.state.isShow
+    })
+  }
+
+  render() {
+    const { isShow } = this.state
+
+    return (
+      <div>
+        <button onClick={() => this.toggleShow()}>toggleShow</button>
+        {/* 模拟v-if */}
+        {isShow && <h2>模拟v-if</h2>}
+        {/* 模拟v-show */}
+        <h2 style={{display: isShow ? 'block' : 'none'}}>模拟v-show</h2>
+      </div>
+    )
+  }
+}
+```
+
+### `JSX的本质`
+
+jsx经过babel转换，会转换成原生React的React.createElement函数
+
+这个函数有三个参数
+
+1. 第一个参数：元素的类型
+2. 第二个参数：元素的属性，类型是对象，如果没有属性为null
+3. 第三个参数：元素的子元素，如果是字符串直接字符串即可，如果还有嵌套的元素，继续嵌套一层React.createElement函数即可
+
+```jsx
+<div>
+  <h2 className="title">Hello World</h2>
+</div>
+
+/* 经过babel转换，相当于 */
+React.createElement('div', null, 
+  React.createElement('h2', {class: 'title'}, 'Hello World')
+)
+```
+

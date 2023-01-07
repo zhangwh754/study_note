@@ -12,6 +12,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        {/* <Condition></Condition> */}
         <List></List>
         {/* <Counter></Counter> */}
         {/* <Counter></Counter> */}
