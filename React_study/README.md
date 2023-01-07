@@ -73,7 +73,7 @@ render()
 
 其他`重要`
 
-1. 因为使用了ES6的class，因此默认内部开启了严格模式，btnClick这种自定义方法，this的指向为undefined，需要在调用的时候用bind改变this的指向，也可以在constructor提前修改函数的指向
+1. 因为使用了ES6的class，因此默认内部开启了严格模式，btnClick这种自定义方法，内部回调时相当于显式绑定this，this的指向为undefined，需要在调用的时候用bind改变this的指向，也可以在constructor提前修改函数的指向
 2. this.setState函数，继承自React.Component类，内部做了修改变量和调用render函数两件事情
 
 ```jsx
@@ -161,6 +161,152 @@ class Counter extends React.Component {
         <h2>计数器：{count}</h2>
         <button onClick={this.increment.bind(this)}>increment</button>
         <button onClick={this.decrement.bind(this)}>decrement</button>
+      </div>
+    )
+  }
+}
+```
+
+## JSX
+
+### 原因
+
+为什么React使用JSX，因为React认为html和js的关系是紧密耦合的，ui中需要事件绑定，展示数据，某些状态改变时又需要改变状态，因此React将html和js结合在一个文件里，即实现了html in js，即jsx
+
+### 插入的内容
+
+#### 插入变量
+
+- Number、String、Array可以直接显示
+
+- Undefined、Null、Boolean不会显示
+- Object不能显示，报错
+
+```jsx
+render() {
+  const number = 1,
+    string = 'hello',
+    array = ['a', 'b', 'c']
+
+  const aaa = undefined,
+    bbb = null,
+    ccc = true
+
+  const obj = { name: 'zwh' }
+
+  return (
+    <div>
+      <ul>
+        <li>{number}</li>
+        <li>{string}</li>
+        <li>{array}</li>
+        <li>{aaa}</li>
+        <li>{bbb}</li>
+        <li>{ccc}</li>
+        {/* <li>{obj}</li> */}
+      </ul>
+    </div>
+  )
+}
+```
+
+#### 插入表达式
+
+- 可以插入运算式
+- 可以插入三元运算符
+- 可以执行某个函数
+
+### 属性绑定
+
+#### 基本属性绑定
+
+```jsx
+render() {
+  const url = 'www.baidu.com'
+  
+  return (
+    <a href={url}>百度一下</a>
+  )
+}
+```
+
+#### class绑定
+
+- 不是动态绑定
+
+```jsx
+<h2 className="a b c">hello world</h2>
+```
+
+- 动态绑定，第一种，模板字符串
+
+```jsx
+const classNames = `a b ${true ? 'c' : ''}`
+
+return <h2 className={classNames}>hello world</h2>
+```
+
+- 动态绑定，第二种，数组
+
+```jsx
+const classNames = ['a', 'b']
+if(true) classNames.push('c')
+
+return <h2 className={classNames.join(' ')}>hello world</h2>
+```
+
+- 动态绑定，第三种，classNames库
+
+[JedWatson/classnames: A simple javascript utility for conditionally joining classNames together (github.com)](https://github.com/JedWatson/classnames)
+
+#### style绑定
+
+需要两个大括号，第一个代表react绑定属性，第二个是对象字面量
+
+```jsx
+<h2 style={{color: 'red'}}>hello world</h2>
+```
+
+### 事件绑定
+
+因为jsx语法实际内部是调用了React.createElement函数，直接绑定this.function，函数最后会相当于直接显式绑定直接调用了，又因为位置在class内部，自动开启了严格模式，因此this的指向是undefined，因此需要改变默认的this指向
+
+事件绑定存在三种改变this指向的方法
+
+1. 使用bind显式改变this的指向（掌握）
+2. 利用箭头函数，继承父级作用域的this指向（了解）
+3. 利用箭头函数，进行隐式this绑定（最常用）
+   - 使用箭头函数，参数的传递很方便（同时传递event和普通的参数）
+
+```jsx
+class Counter extends React.Component {
+  constructor() {
+    super()
+
+    this.state = {
+      count: 0
+    }
+  }
+
+  increment() {
+    this.setState({
+      count: this.state.count + 1
+    })
+  }
+
+  increment2 = () => {
+    this.setState({
+      count: this.state.count + 1
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <h2>{this.state.count}</h2>
+        <button onClick={this.increment.bind(this)}>increase1</button>
+        <button onClick={this.increment2}>increase2</button>
+        <button onClick={event => this.increment(event)}>increase3（最常用）</button>
       </div>
     )
   }

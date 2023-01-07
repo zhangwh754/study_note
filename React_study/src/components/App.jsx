@@ -12,10 +12,11 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Counter></Counter>
-        <Counter></Counter>
-        <Counter></Counter>
-        <Counter></Counter>
+        <List></List>
+        {/* <Counter></Counter> */}
+        {/* <Counter></Counter> */}
+        {/* <Counter></Counter> */}
+        {/* <Counter></Counter> */}
       </div>
     )
   }
