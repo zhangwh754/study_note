@@ -105,3 +105,65 @@ class App extends React.Component {
 }
 ```
 
+### 实例1：列表渲染
+
+```jsx
+class List extends React.Component {
+  constructor() {
+    super()
+
+    this.state = {
+      data: ['a', 'b', 'c', 'd', 'e']
+    }
+  }
+
+  render() {
+    return (
+      <ul>
+        {this.state.data.map(item => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    )
+  }
+}
+```
+
+### 实例2：计数器
+
+```jsx
+class Counter extends React.Component {
+  constructor() {
+    super()
+
+    this.state = {
+      count: 0
+    }
+  }
+
+  increment() {
+    this.setState({
+      count: this.state.count + 1
+    })
+  }
+
+  decrement() {
+    this.setState({
+      count: this.state.count - 1
+    })
+  }
+
+  render() {
+    const { count } = this.state
+
+    return (
+      <div>
+        <h2>计数器：{count}</h2>
+        <button onClick={this.increment.bind(this)}>increment</button>
+        <button onClick={this.decrement.bind(this)}>decrement</button>
+      </div>
+    )
+  }
+}
+```
+
