@@ -12,8 +12,9 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <Cart></Cart>
         {/* <Condition></Condition> */}
-        <List></List>
+        {/* <List></List> */}
         {/* <Counter></Counter> */}
         {/* <Counter></Counter> */}
         {/* <Counter></Counter> */}
