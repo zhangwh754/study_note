@@ -377,3 +377,432 @@ React.createElement('div', null,
 )
 ```
 
+## React组件化
+
+### 类组件规范
+
+1. 组件名必须是大写开头
+2. 必须继承React.Component 类
+3. 必须实现render函数
+
+### 函数组件特点
+
+1. this不指向组件实例，即不使用this
+2. 不能保存自己的state
+3. 没有生命周期
+
+使用React hooks可以改善第二和第三的缺点
+
+### 生命周期
+
+![image-20230108140542041](img/image-20230108140542041.png)
+
+React的主要生命周期有三个
+
+1. componentDidMount
+2. componentDidUpdate
+3. componentWillUnmount
+
+分别对应
+
+1. 挂载完成
+2. 更新完成
+3. 卸载前
+
+创建如下组件时，会依次
+
+```jsx
+import React from 'react'
+
+class HelloWorld extends React.Component {
+  constructor() {
+    super()
+
+    this.state = {
+      message: 'Hello World'
+    }
+
+    console.log('constructor')
+  }
+
+  render() {
+    console.log('render')
+
+    const { message } = this.state
+
+    return (
+      <>
+        <p>{message}</p>
+        <button onClick={() => this.changeMsg()}>changeMsg</button>
+      </>
+    )
+  }
+
+  changeMsg() {
+    this.setState({
+      message: '你好，世界'
+    })
+  }
+
+  componentDidMount() {
+    console.log('componentDidMount')
+  }
+
+  componentDidUpdate() {
+    console.log('componentDidUpdate')
+  }
+
+  componentWillUnmount() {
+    console.log('componentWillUnmount')
+  }
+}
+
+export default HelloWorld
+```
+
+#### `生命周期执行顺序`
+
+1. 组件初始化时，会依次执行constructor函数、render函数，再执行生命周期componentDidMount
+2. 组件更新时，会依次执行render函数，再执行生命周期componentDidUpdate
+3. 组件销毁前，会执行生命周期函数componentWillUnmount
+4. 同时初始化多个组件，会依次执行每个组件的constructor，再执行render，呈现constructor=>render=>constructor=>render=>constructor=>render的趋势，全部完毕后再执行全部的componentDidMount生命周期函数
+
+![image-20230108142546913](img/image-20230108142546913.png)
+
+#### 生命周期操作
+
+`componentDidMount`
+
+1. 进行dom操作
+2. 发送网络请求
+3. 进行一些订阅操作
+
+`componentDidUpdate`
+
+1. 获取更新之后的Dom
+2. 对更新前后的props比较，发送网络请求
+
+`componentDidMount`
+
+1. 执行清理操作
+
+#### 其他不常用的生命周期
+
+[React.Component – React (reactjs.org)](https://zh-hans.reactjs.org/docs/react-component.html#rarely-used-lifecycle-methods)
+
+
+
+### 组件通信
+
+1. 父组件可以传递属性给子组件
+2. 子组件可以在constructor函数接受props参数
+3. 子组件可以在super传递props参数，把props属性挂载到组件实例上
+4. render函数内，如果挂载了props属性，可以获取到props
+5. 类组件默认执行可constructor函数，如果不需要管理state，可以省略constructor函数
+
+```jsx
+import React from 'react'
+
+class HelloWorld extends React.Component {
+  // constructor(props) {
+  //   super(props)
+  // }
+
+  render() {
+    const { list } = this.props
+
+    return (
+      <ul>
+        {list.map(item => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    )
+  }
+}
+
+export default HelloWorld
+```
+
+### 组件参数默认值
+
+使用静态属性，或者给实例添加属性即可
+
+可以配合typescript，或者react自带的propTypes
+
+```jsx
+import React from 'react'
+
+const defaultProps = {
+  list: ['a', 'b', 'c']
+}
+
+class HelloWorld extends React.Component {
+  static defaultProps = defaultProps
+
+  render() {
+	// ...
+  }
+}
+
+// HelloWorld.defaultProps = defaultProps
+
+export default HelloWorld
+```
+
+### 组件子传父
+
+父组件给子组件传递一个函数，子组件通过回调函数操作数据
+
+```jsx
+// 父组件
+import React, { Component } from 'react'
+import CounterItem from './CounterItem'
+
+export class Counter extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      counter: 0
+    }
+  }
+
+  render() {
+    const { counter } = this.state
+
+    return (
+      <>
+        <h2>{counter}</h2>
+        <CounterItem increment={count => this.increment(count)} />
+      </>
+    )
+  }
+
+  increment(count) {
+    this.setState({
+      counter: this.state.counter + count
+    })
+  }
+}
+
+export default Counter
+```
+
+```jsx
+// 子组件
+import React, { Component } from 'react'
+
+export class CounterItem extends Component {
+  render() {
+    const { increment } = this.props
+
+    return (
+      <>
+        <button onClick={() => increment(1)}>+1</button>
+        <button onClick={() => increment(5)}>+5</button>
+        <button onClick={() => increment(10)}>+10</button>
+      </>
+    )
+  }
+}
+
+export default CounterItem
+```
+
+### 组件实现插槽（children）
+
+父组件传递元素，子组件通过props的children属性接受
+
+1. `如果只传递了一个元素，children就是这个元素本身`
+2. `如果传递了多个元素，children是传递的多个元素组成的数组`
+3. 可以通过propTypes约束children必须传递单个还是多个
+
+```jsx
+<Navbar>
+  <button>+1</button>
+  <h2>Hello World</h2>
+  <i>Love</i>
+</Navbar>
+```
+
+```jsx
+export class Navbar extends Component {
+  render() {
+    const { children } = this.props
+
+    return (
+      <div className="navbar">
+        <div className="left">{children[0]}</div>
+        <div className="middle">{children[1]}</div>
+        <div className="right">{children[2]}</div>
+      </div>
+    )
+  }
+}
+```
+
+### 组件实现插槽（props）(推荐)
+
+直接通过props实现插槽
+
+```jsx
+<Navbar2 leftSlot={<button>+1</button>} middleSlot={<h2>Hello World</h2>} rightSlot={<i>Love2</i>} />
+```
+
+```jsx
+export class Navbar extends Component {
+  render() {
+    const { leftSlot, middleSlot, rightSlot } = this.props
+
+    return (
+      <div className="navbar">
+        <div className="left">{leftSlot}</div>
+        <div className="middle">{middleSlot}</div>
+        <div className="right">{rightSlot}</div>
+      </div>
+    )
+  }
+}
+```
+
+### 组件实现作用域插槽
+
+利用回调函数
+
+父组件传入一个回调函数，子组件可以把自己的数据传入这个回调函数，父组件可以获取到数据进行操作
+
+```jsx
+// 父组件
+render() {
+  const { content, currentIndex } = this.state
+
+  return (
+    <>
+      <NavItem
+        list={['流行', '新款', '精选']}
+        currentIndex={currentIndex}
+        itemClick={(...args) => this.itemClick(...args)}
+        slotScope={item => this.getNavItem(item)}
+      />
+      <h1 className="content">{content}</h1>
+    </>
+  )
+}
+
+getNavItem(item) {
+  if (item === '流行') {
+    return <span>{item}</span>
+  } else if (item === '新款') {
+    return <button>{item}</button>
+  } else {
+    return <i>{item}</i>
+  }
+}
+```
+
+```jsx
+// 子组件
+render() {
+  const { itemClick, list, currentIndex, slotScope } = this.props
+
+  return (
+    <nav>
+      <ul>
+        {list.map((item, index) => (
+          <li className={currentIndex === index ? 'active' : ''} key={item} onClick={() => itemClick(item, index)}>
+            {slotScope(item)}
+            {/* <span>{item}</span> */}
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+```
+
+### 属性传值展开
+
+如果已经有了一个 props 对象，你可以使用展开运算符 `...` 来在 JSX 中传递整个 props 对象。以下两个组件是等价的
+
+可以通过这种方式多层传递this.props达成跨层级组件传值
+
+```jsx
+function App1() {
+  return <Greeting firstName="Ben" lastName="Hector" />;
+}
+
+function App2() {
+  const props = {firstName: 'Ben', lastName: 'Hector'};
+  return <Greeting {...props} />;
+}
+```
+
+### Context上下文
+
+Context用于跨过中间元素传递props，即不同层级访问一些相同的数据
+
+Context传递数据，子元素需要写在Provider里面
+
+```js
+// context/info-content
+
+import React from 'react'
+
+// 传递的参数，是如果没有provider时默认值
+const InfoContext = React.createContext({
+  name: 'zwh',
+  age: 18
+})
+
+export default InfoContext
+```
+
+```jsx
+<InfoContext.Provider
+  value={{
+    name: 'zwh',
+    age: 18
+  }}
+>
+  <HelloWorld />
+</InfoContext.Provider>
+```
+
+```jsx
+class HelloWorld extends React.Component {
+  static contextType = InfoContext
+
+  render() {
+	console.log(this.context)  // {name: 'zwh', age: 18}
+  }
+}
+```
+
+#### 函数组件使用context
+
+类组件其实也能这样写
+
+1. 在context.consumer标签内部
+2. 传入一个回调函数，回调函数的参数是共享的context
+3. 这个函数返回一个jsx
+
+```jsx
+import InfoContext from '../context/info-context'
+
+const HelloWorld = () => {
+  return (
+    <InfoContext.Consumer>
+      {value => (
+        <>
+          <h2>{value.name}</h2>
+          <h2>{value.age}</h2>
+        </>
+      )}
+    </InfoContext.Consumer>
+  )
+}
+
+export default HelloWorld
+```
+

@@ -1,0 +1,17 @@
+ul {
+  display: flex;
+}
+
+li {
+  list-style: none;
+  flex: 1;
+}
+
+li > * {
+  padding: 5px 10px;
+}
+
+.active > * {
+  color: red;
+  border-bottom: 3px solid red;
+}
