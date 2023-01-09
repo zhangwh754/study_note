@@ -13,13 +13,13 @@ export class CounterItem extends Component {
     )
   }
 
-  componentDidMount() {
-    console.log('componentDidMount')
-  }
+  // componentDidMount() {
+  //   console.log('componentDidMount')
+  // }
 
-  componentDidUpdate() {
-    console.log('componentDidUpdate')
-  }
+  // componentDidUpdate() {
+  //   console.log('componentDidUpdate')
+  // }
 }
 
 export default CounterItem

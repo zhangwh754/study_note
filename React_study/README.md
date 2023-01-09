@@ -749,7 +749,7 @@ Context传递数据，子元素需要写在Provider里面
 
 import React from 'react'
 
-// 传递的参数，是如果没有provider时默认值
+// 传递的参数，是如果没有provider时的默认值
 const InfoContext = React.createContext({
   name: 'zwh',
   age: 18
@@ -805,4 +805,105 @@ const HelloWorld = () => {
 
 export default HelloWorld
 ```
+
+## setState
+
+### React为什么要用setState
+
+1. 因为state更新后，希望React根据最新的state重新渲染页面，但React不能监听的数据变化
+2. React没有实现Vue的Object.defineProperty或Proxy的数据劫持
+3. 需要手动调用setState告诉React数据发生了变化
+
+### setState的三种用法
+
+`基础用法`
+
+1. setState相当于调用了Object.assign(this.state, newState)，合并了新旧的两个对象
+
+```jsx
+// this.state = {count: 0, msg: 'Hello'}
+
+this.setState({
+  count: 100
+})
+```
+
+`回调用法`
+
+比起基础用法的好处
+
+1. 可以从参数获取之前的state和props
+2. 可以在回调函数里面进行一些耦合的操作，不用拆分出去
+
+```jsx
+this.setState((state, props) => {
+  // 进行部分逻辑操作
+  return {
+  	count: 100  
+  }
+})
+```
+
+`立即获取最新的state`
+
+基础用法，或回调用法，第二个参数也可以传入一个回调函数，可以在内部获取最新的state
+
+```jsx
+this.setState(
+  {
+    counter: this.state.counter + count
+  },
+  () => {
+    console.log('最新的state：', this.state)
+  }
+)
+console.log('不能及时获取：', this.state)
+```
+
+### setData为什么要设计成异步
+
+1. setData设计成异步可以提高性能
+   - 如果setData是同步的，那么在连续调用多次setData时（如批量请求接口），会多次执行render函数，重复渲染Dom，浪费性能
+   - React的设计是合并多次setData，然后批量更新，只调用一次render函数
+2. 如果设计成同步，render函数执行延迟，会造成父组件的state和子组件的props不同步
+   - 不同步会造成调试时数据混乱
+
+### 旧版本同步的setData
+
+- React18之前，Promise、setTimeout、原生事件处理（addEventListener），内部的setData，是同步的
+- React18，全部setData是异步的
+
+### 使setData变为同步
+
+使用react-dom包的flushSync
+
+```jsx
+console.log('old:', this.state.counter) // 0
+flushSync(() => {
+  this.setState({ counter: this.state.counter + 1 })
+})
+console.log('new:', this.state.counter) // 1
+```
+
+## React性能优化
+
+### diff算法
+
+1. 同层节点比较，不会跨层级比较
+2. 同类型的节点才比较，类型改变，这个树会整个重新渲染
+3. 可以通过指定key提高性能
+   - key必须唯一
+   - 指定index为key只能消除警告，不能提高性能
+
+### shouldComponentUpdate
+
+默认情况下，如果App组件调用了setState，App和App下面的所有组件都会调用render函数，性能较差
+
+- React默认情况下，调用setStata就会调用render函数
+- 可以通过生命周期shouldComponentUpdate，返回一个false阻止render函数的调用提高性能
+- shouldComponentUpdate接收两个参数，分别是nextProps，nextState，和当前的props和state进行比对，如果发生了修改，返回一个true调用render函数
+
+### 纯组件pureComponent
+
+纯组件是shouldComponentUpdate的替代
 

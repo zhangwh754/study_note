@@ -20,15 +20,15 @@ class App extends React.Component {
   render() {
     return (
       <>
-        <InfoContext.Provider
+        {/* <InfoContext.Provider
           value={{
             name: 'zwh',
             age: 18
           }}
         >
         </InfoContext.Provider>
-          <HelloWorld />
-        {/* <Counter /> */}
+          <HelloWorld /> */}
+        <Counter />
         {/* <Nav /> */}
         {/* <Navbar>
           <button>+1</button>

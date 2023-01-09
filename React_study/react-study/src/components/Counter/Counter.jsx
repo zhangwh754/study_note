@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { flushSync } from 'react-dom'
 import CounterItem from './CounterItem'
 
 export class Counter extends Component {
@@ -22,10 +23,13 @@ export class Counter extends Component {
   }
 
   increment(count) {
-    this.setState({
-      counter: this.state.counter + count
+    console.log('old:', this.state.counter) // 0
+    flushSync(() => {
+      this.setState({ counter: this.state.counter + 1 })
     })
+    console.log('new:', this.state.counter) // 1
   }
+
 }
 
 export default Counter
