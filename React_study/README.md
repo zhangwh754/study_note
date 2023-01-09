@@ -907,3 +907,11 @@ console.log('new:', this.state.counter) // 1
 
 纯组件是shouldComponentUpdate的替代
 
+#### 类组件
+
+类组件改为继承React.pureComponent即可
+
+```
+
+```
+
