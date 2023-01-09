@@ -885,6 +885,36 @@ flushSync(() => {
 console.log('new:', this.state.counter) // 1
 ```
 
+### setData修改规范
+
+`纯组件内`，不能直接修改state后再调用setState，因为在调用shouldComponentUpdate时，前后两次的state是相同的，永远不会调用render函数
+
+正确应该对那个state属性进行一次浅拷贝（利用解构即可），对新解构出的新属性修改，再setState到state内
+
+```jsx
+// 错误示例
+btnClick() {
+  this.state.data.push({ name: 'nie', age: 50 })
+
+  this.setState({
+    data: this.state.data
+  })
+}
+```
+
+```jsx
+// 正确示例
+btnClick() {
+  const data = [...this.state.data]
+
+  data.push({ name: 'nie', age: 50 })
+
+  this.setState({
+    data
+  })
+}
+```
+
 ## React性能优化
 
 ### diff算法
@@ -907,11 +937,136 @@ console.log('new:', this.state.counter) // 1
 
 纯组件是shouldComponentUpdate的替代
 
+使用纯组件，react内部会调用shouldComponentUpdate，若当前组件的state未发生改变，或当前的props未发生改变时，会阻止render函数的调用，提高性能
+
 #### 类组件
 
 类组件改为继承React.pureComponent即可
 
+```jsx
+export class Home extends PureComponent {
+  render() {
+    const { count } = this.props
+
+    console.log('home_class render')
+
+    return (
+      <>
+        <h2>类组件，使用PureComponent：{count}</h2>
+      </>
+    )
+  }
+}
 ```
 
+#### 函数组件
+
+函数组件改为使用memo函数包裹，导出返回值即可
+
+```jsx
+import React, { memo } from 'react'
+
+const Home = memo(({ count }) => {
+  console.log('Home_Function render')
+
+  return (
+    <>
+      <h2>函数组件，使用memo：{count}</h2>
+    </>
+  )
+})
+
+export default Home
 ```
 
+## Ref获取Dom
+
+### 三种方式
+
+使用ref属性
+
+1. 用废弃的this.refs获取
+2. （推荐）用createRef api
+3. ref属性传递一个回调函数，第一个参数即dom元素
+
+```jsx
+import React, { createRef, PureComponent } from 'react'
+
+export class App extends PureComponent {
+  constructor() {
+    super()
+
+    this.h2Ref2 = createRef()
+
+    this.h2Ele = null
+  }
+
+  render() {
+    return (
+      <>
+        <h2 ref="aaaaa">11111</h2>
+        <h2 ref={this.h2Ref2}>11111</h2>
+        <h2 ref={el => (this.h2Ele = el)}>11111</h2>
+        <button onClick={() => this.btnClick()}>btnClick</button>
+      </>
+    )
+  }
+
+  btnClick() {
+    const innerHtml = 'Hello World'
+
+    // 第一种方式
+    // const h2Ref1 = this.refs.aaaaa
+    // h2Ref1.innerHTML = innerHtml
+
+    // 第二种方式（推荐）
+    this.h2Ref2.current.innerHTML = innerHtml
+
+    // 第三种方式
+    // this.h2Ele.innerHTML = innerHtml
+  }
+}
+
+export default App
+```
+
+### 获取类组件实例
+
+即上面的第二种方式，使用createRef即可
+
+
+
+### 获取函数组件实例
+
+函数组件不能使用ref，必须使用`forwardRef`
+
+使用forwardRef函数包裹一层，函数第二个参数ref是父级的ref
+
+即可用跨层级获取Dom
+
+```jsx
+const Test = forwardRef(function Test(props, ref) {
+  return (
+    <div>
+      <h1>子组件</h1>
+      <h2 ref={ref}>Hello World</h2>
+    </div>
+  )
+})
+```
+
+## 受控和非受控组件
+
+指表单组件
+
+### 受控组件
+
+收集用户输入时，有`value`的情况下，给表单元素都绑定一个`onChange`事件，更新组件的state，这叫做受控组件
+
+#### 缺陷
+
+如果有太多表单组件，需要为每一个受控组件编写处理函数，很麻烦
+
+### 非受控组件
+
+不绑定`value`的是非受控组件，通过ref直接获取dom的表单值

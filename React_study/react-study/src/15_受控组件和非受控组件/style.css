@@ -1,0 +1,8 @@
+label:not(.checkbox) {
+  display: inline-block;
+  width: 64px;
+}
+
+br {
+  margin: 10px;
+}
