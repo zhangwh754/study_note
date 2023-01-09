@@ -6,7 +6,8 @@ import ReactDOM from 'react-dom/client'
 // import App from './14_react获取Dom/2_获取类组件Dom.jsx'
 // import App from './14_react获取Dom/3_获取函数组件DOm.jsx'
 // import App from './15_受控组件和非受控组件/1_受控组件和非受控组件.jsx'
-import App from './15_受控组件和非受控组件/2_提交表单.jsx'
+// import App from './15_受控组件和非受控组件/2_提交表单_受控组件.jsx'
+import App from './15_受控组件和非受控组件/3_提交表单_非受控组件.jsx'
 
 const root = ReactDOM.createRoot(document.querySelector('#root'))
 
