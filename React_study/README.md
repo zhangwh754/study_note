@@ -1227,5 +1227,347 @@ export default App
 
 ### 高阶函数
 
+符合一点即可
+
 - 接收一个或多个函数作为参数
 - 输出一个新的函数
+
+### 高阶组件的定义
+
+符合一点即可
+
+- 接收一个组件作为参数
+- 返回一个新的组件
+
+### 高阶组件的应用
+
+高阶组件可以对组件进行一层额外的包装（可能类似Vue 的minxins？）
+
+```jsx
+import React, { PureComponent } from 'react'
+
+function Home() {
+  return <h2>Home</h2>
+}
+
+function highOrderComponent(Cpn) {
+  class newComponent extends PureComponent {
+    render() {
+      console.log('高阶组件的传递props：', this.props.count)
+
+      return <Cpn />
+    }
+  }
+
+  return newComponent
+}
+
+const HighHome = highOrderComponent(Home)
+
+export class App extends PureComponent {
+  render() {
+    return (
+      <>
+        <HighHome count={10}></HighHome>
+      </>
+    )
+  }
+}
+
+export default App
+```
+
+### [掌握]高阶组件混入主题
+
+```jsx
+// 定义context
+import { createContext } from 'react'
+
+const ThemeColor = createContext()
+
+export default ThemeColor
+```
+
+```jsx
+// 定义和使用组件
+const Home = mixinsThemeColor(function (props) {
+  const { color, size, count } = props
+
+  return (
+    <>
+      <h2 style={{ color, fontSize: size }}>Home: {count}</h2>
+    </>
+  )
+})
+
+export class App extends PureComponent {
+  render() {
+    return (
+      <>
+        <ThemeColor.Provider value={{ color: 'red', size: 80 }}>
+          <Home count={10}></Home>
+        </ThemeColor.Provider>
+      </>
+    )
+  }
+}
+```
+
+```jsx
+// 定义高阶组件，在高阶组件内使用context.Consumer
+import ThemeColor from './ThemeColor'
+
+function mixinsThemeColor(OriginComponent) {
+  return props => (
+    <>
+      <ThemeColor.Consumer>
+        {value => (
+          <>
+            <OriginComponent {...props} {...value} />
+          </>
+        )}
+      </ThemeColor.Consumer>
+    </>
+  )
+}
+
+export default mixinsThemeColor
+```
+
+### [掌握]高阶组件实现登录鉴权
+
+`注意`
+
+- 获取isLogin，需要放在函数组件的return里面，否则不能更新
+- 父组件需要调用setState或者forceUpdate（不推荐）才能调用render函数
+
+```jsx
+function enhance(OriginComponent) {
+  return props => {
+    const isLogin = !!localStorage.getItem('token')
+    if (isLogin) {
+      return <OriginComponent {...props} />
+    }
+    return <h2>请先登录</h2>
+  }
+}
+
+export default enhance
+```
+
+### 高阶组件的总结
+
+类组件，一般都是用高阶组件进行增强
+
+函数组件一般转而使用hooks
+
+#### 高阶组件hoc的缺陷
+
+- hoc需要在元组件上包裹，大量使用会产生过多嵌套造成调试困难
+- hoc会劫持props，有可能造成冲突，也容易搞不清楚props的来源
+
+### react自带的高阶组件
+
+- forwardRef，只能传递函数式组件
+- memo，也只能传递函数式组件
+
+
+
+## portals 传送门
+
+createPortal是一个函数，第一个参数是组件，第二个参数是dom
+
+```jsx
+import { createPortal } from 'react-dom'
+
+const Modal = function (props) {
+  const Modal = () => (
+    <>
+      <h2 >Title</h2>
+    </>
+  )
+
+  return createPortal(<Modal />, document.querySelector('#modal'))
+}
+```
+
+
+
+## Fragment 片段
+
+Fragment标签，即空标签的替代
+
+当需要绑定key时，不能用空标签，必须用fragment的完整写法
+
+
+
+## react严格模式
+
+### 什么是严格模式
+
+- 与fragment一样，不会渲染实际的dom
+- 为后代元素触发检查
+- 严格模式只在开发模式允许
+
+### 严格模式的检测内容
+
+- 废弃的this.refs语法
+- 不安全的生命周期
+- 帮助检查意外的副作用
+  - 通过对常见的render、constructor、componentDidMount调用两次
+- 废弃的findDomNode语法
+- 过时的static context语法
+
+
+
+## react过渡动画
+
+`使用react-transition-group`
+
+### 单个元素切换动画
+
+可以使用react-transition-group的CSSTransition组件，有四个必传属性
+
+1. in：控制内部内容的显隐，布尔值
+2. timeout：动画过渡时间，毫秒
+3. unmountOnExit：动画结束是否卸载，传true
+4. classNames：对应的css动画前缀，
+   - 初始化为appear和appear-active，类似enter
+   - 进入为enter和enter-active，对应初始和过渡期间
+   - 退出为exit和exit-active，对应初始和过渡时间
+   - 进入时会添加enter的两个css类
+   - 进入结束会添加enter-done类，移除两个enter进入类
+   - 退出会立即移除enter-done类，添加exit两个退出类
+   - 退出结束立即删除Dom
+5. 生命周期钩子
+   - onEnter：开始进入前
+   - onEntered：进入结束
+   - onEntering：进入开始触发
+   - onExit：结束开始前触发
+   - onExited：结束结束
+   - onExiting：结束开始触发
+
+```css
+.a-enter {
+  opacity: 0;
+}
+
+.a-enter-active {
+  opacity: 1;
+  transition: opacity 2s ease;
+}
+
+.a-exit {
+  opacity: 1;
+}
+
+.a-exit-active {
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+```
+
+```jsx
+import React, { PureComponent } from 'react'
+import { CSSTransition } from 'react-transition-group'
+
+import './style.css'
+
+export class App extends PureComponent {
+  constructor() {
+    super()
+
+    this.state = {
+      isShow: false
+    }
+  }
+
+  render() {
+    const { isShow } = this.state
+
+    return (
+      <>
+        <button onClick={() => this.setState({ isShow: !isShow })}>switch</button>
+
+        {/* {isShow && <h2>Hello World</h2>} */}
+        <CSSTransition in={isShow} classNames="a" unmountOnExit={true} timeout={1000}>
+          <h2>Hello World</h2>
+        </CSSTransition>
+      </>
+    )
+  }
+}
+
+export default App
+```
+
+### 解决严格模式报错
+
+react-transition-group内部使用的是严格模式下废弃的findDomNode api，因此会报错
+
+可以使用nodeRef手动指定ref，可以避免报错
+
+```jsx
+<CSSTransition in={isShow} classNames="a" unmountOnExit={true} timeout={2000} nodeRef={this.h2Ref}>
+  <h2 ref={this.h2Ref}>Hello World</h2>
+</CSSTransition>
+```
+
+### 两个元素的切换动画
+
+使用SwitchTransition包裹
+
+不使用in属性，而是使用key属性，指定一个变量，变量改变时会切换
+
+```css
+.login-enter {
+  transform: translateX(100px);
+  opacity: 0;
+}
+
+.login-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.login-exit {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.login-exit-active {
+  opacity: 0;
+  transform: translateX(-100px);
+}
+```
+
+```jsx
+<button onClick={() => this.setState({ isCN: !isCN })}>switch</button>
+
+<SwitchTransition>
+  <CSSTransition key={isCN} classNames="login" timeout={300} nodeRef={this.h2Ref}>
+    <h2 ref={this.h2Ref}>{isCN ? '你好世界' : 'Hello World'}</h2>
+  </CSSTransition>
+</SwitchTransition>
+```
+
+### 列表过渡动画
+
+使用transition group 如列表
+
+TransitionGroup可以使用component属性
+
+```jsx
+<TransitionGroup component="ul">
+  {list.map((item, index) => (
+    <CSSTransition key={item.id} classNames="login" timeout={300}>
+      <li key={item.id}>
+        {item.name}的年龄是{item.age}-<button onClick={() => this.remove(index)}>remove</button>
+      </li>
+    </CSSTransition>
+  ))}
+</TransitionGroup>
+```
+
