@@ -1571,3 +1571,228 @@ TransitionGroup可以使用component属性
 </TransitionGroup>
 ```
 
+
+
+## react编写css
+
+### 需求
+
+- css存在作用域
+- css可以获取组件状态，传入变量
+
+### css模块化
+
+- 这个是webpack的解决方式，需要设置webpack的modules属性为true，react脚手架默认开启
+- 需要把css样式文件改成.module.css后缀
+
+```jsx
+import AppStyle from './style.module.css'
+
+const App = function () {
+  return <h2 className={AppStyle.h2}>Hello World</h2>
+}
+```
+
+`缺点`
+
+- 不能使用state的状态变量
+- 类名不能用-连接
+
+### react使用scss
+
+安装sass库即可
+
+```bash
+npm i -D sass
+```
+
+### css in js
+
+[styled-components](https://styled-components.com/)
+
+使用的是styled-components库
+
+导出一个组件，使用的时候用这个组件包裹即可
+
+```jsx
+export const AppWrapper = styled.div`
+  .title {
+    color: red;
+    &:hover {
+      background-color: lightblue;
+    }
+  }
+  .content {
+    color: blue;
+    border: 1px solid red;
+  }
+`
+```
+
+```jsx
+import { AppWrapper } from './style'
+
+export class App extends PureComponent {
+  render() {
+    return (
+      <AppWrapper>
+        <h2 className="title">title</h2>
+        <div className="content">Lorem ipsum dolor sit</div>
+      </AppWrapper>
+    )
+  }
+}
+```
+
+#### 传递state
+
+模板字符串，使用一个函数，传参在函数的props属性里面
+
+```jsx
+import { AppWrapper } from './style'
+
+export class App extends PureComponent {
+  constructor() {
+    super()
+
+    this.state = {
+      color: 'red'
+    }
+  }
+
+  render() {
+    const { color } = this.state
+
+    return (
+      <AppWrapper color={color}>
+        <h2 className="title">title</h2>
+        <button onClick={() => this.setState({ color: 'blue' })}>changeColor</button>
+      </AppWrapper>
+    )
+  }
+}
+```
+
+```js
+import styled from 'styled-components'
+
+export const AppWrapper = styled.div`
+  .title {
+    color: ${props => props.color || 'green'};
+  }
+`
+```
+
+#### 全局主题的使用
+
+styled-components提供了一个ThemeProvider元素，可以全局传递props
+
+```jsx
+<ThemeProvider theme={{ border: '3px solid blue' }}>
+  //后代元素
+</ThemeProvider>
+```
+
+```js
+export const AppWrapper = styled.div`
+  .title {
+    border: ${props => props.theme.border};
+  }
+`
+```
+
+#### 设置默认值
+
+props对应属性没有值时，会取attrs内部的值
+
+或者直接在color: ${props => props.color}用短路
+
+```jsx
+export const AppWrapper = styled.div.attrs(props => ({
+  color: props.color || 'purple'
+}))`
+  .title {
+    color: ${props => props.color};
+    border: ${props => props.theme.border};
+  }
+`
+```
+
+#### 混入
+
+styled函数混入一个组件即可
+
+```js
+const Button = styled.button`
+  border: 1px solid lightblue;
+  background-color: #ccc;
+`
+
+export const DefaultButton = styled(Button)`
+  color: red;
+`
+```
+
+### 动态添加Class
+
+使用classnames库
+
+- classnames库可以导出一个函数
+- 函数可以传入固定需要的class-'ccc'
+- 可以传入一个对象，属性对应class名，值对应布尔值，为true会添加对应的class，类似Vue的写法
+
+```jsx
+import React, { PureComponent } from 'react'
+import classNames from 'classnames'
+
+export class App extends PureComponent {
+  constructor() {
+    super()
+
+    this.state = {
+      isA: true,
+      isB: false
+    }
+  }
+
+  render() {
+    const { isA, isB } = this.state
+
+    return <div className={classNames('ccc', { isA, isB })}>App</div>
+  }
+}
+
+export default App
+```
+
+
+
+## Redux的使用
+
+### 纯函数
+
+- 一样的输入一定是一样的输出
+- 函数的执行不会产生副作用
+
+### redux的核心概念
+
+- 数据的变化通过派发action
+- action是一个对象，包含更新的type和content
+- 通过reducer联系action和state
+- reducer是一个纯函数
+- reducer将传入的state和action结合在一起，形成一个新的state，返回出去
+
+### redux三大原则
+
+- 单一数据源
+  - 整个程序的state存在一个store的一个对象内，这样方便维护和修改
+- state是只读的
+  - `唯一`修改state的方法是使用action，只能通过action描述如何修改state，保证了所有修改按顺序执行
+- reducer是一个纯函数
+  - 使用reducer把新旧的state混合在一起，返回一个新的state
+
+### redux的使用
+
+redux demo，包含文档
+
+https://github.com/zhangwh754/redux-demo.git

@@ -16,7 +16,11 @@ import ReactDOM from 'react-dom/client'
 // import App from './18_严格模式/App.jsx'
 // import App from './19_React动画/1_单个组件切换.jsx'
 // import App from './19_React动画/2_两个元素切换.jsx'
-import App from './19_React动画/3_列表动画.jsx'
+// import App from './19_React动画/3_列表动画.jsx'
+// import App from './20_CSS/1_CSS模块化.jsx'
+// import App from './20_CSS/2_动态添加class.jsx'
+// import App from './21_CSS_In_Js/App.jsx'
+import App from './22_redux/App'
 
 const root = ReactDOM.createRoot(document.querySelector('#root'))
 
